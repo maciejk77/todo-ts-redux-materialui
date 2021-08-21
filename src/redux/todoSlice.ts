@@ -10,7 +10,7 @@ const todoSlice = createSlice({
   reducers: {
     addTodo: {
       reducer: (state, action: PayloadAction<Todo>) => {
-        return [...state, action.payload]; //state.push(action.payload);
+        return [...state, action.payload];
       },
       prepare: (description: string) => ({
         payload: {
@@ -20,24 +20,33 @@ const todoSlice = createSlice({
         } as Todo,
       }),
     },
+
     removeTodo(state, action: PayloadAction<string>) {
       const index = state.findIndex((todo) => todo.id === action.payload);
       state.splice(index, 1);
     },
-    editTodo(state, action: PayloadAction<string>) {
-      const index = state.findIndex((todo) => todo.id === action.payload);
-      console.log('editTodo: ', index, state);
+
+    editTodo(
+      state,
+      action: PayloadAction<{ description: string; id: string }>
+    ) {
+      const { id, description } = action.payload;
+      const index = state.findIndex((todo) => todo.id === id);
+      state[index].description = description;
     },
+
     setTodoStatus(
       state,
       action: PayloadAction<{ completed: boolean; id: string }>
     ) {
-      const index = state.findIndex((todo) => todo.id === action.payload.id);
-      state[index].completed = action.payload.completed;
+      const { id, completed } = action.payload;
+      const index = state.findIndex((todo) => todo.id === id);
+      state[index].completed = completed;
     },
   },
 });
 
 export const { addTodo, removeTodo, editTodo, setTodoStatus } =
   todoSlice.actions;
+
 export default todoSlice.reducer;
