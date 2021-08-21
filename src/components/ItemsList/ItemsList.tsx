@@ -1,3 +1,4 @@
+import { ChangeEvent } from 'react';
 import { Dispatch, RootState } from '../../redux/store';
 import { useDispatch, useSelector } from 'react-redux';
 import { removeTodo, editTodo, setTodoStatus } from '../../redux/todoSlice';
@@ -14,7 +15,7 @@ const ItemsList = () => {
   const todoList = useSelector((state: RootState) => state);
   const dispatch = useDispatch<Dispatch>();
 
-  const handleTextChange = (e: any) => {
+  const handleTextChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { id, value } = e.target;
     dispatch(editTodo({ id, description: value }));
   };
